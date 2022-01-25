@@ -4,38 +4,38 @@ import keyboard
 import time
 from tkinter import *
 from tkinter import filedialog
-root = Tk()     '''Create tk window'''
-root.withdraw() '''Hides tk window'''
+root = Tk()     #Create tk window
+root.withdraw() #Hides tk window
 
-pygame.init()   '''Initialize pygame'''
+pygame.init()   #Initialize pygame
 
-Window = pg.display.set_mode((750, 450)) '''Create pg window'''
+Window = pg.display.set_mode((750, 450)) #Create pg window
 
-pg.mixer.init() '''Initialize pygame mixer'''
+pg.mixer.init()     #Initialize pygame mixer
 FPS = 30
 clock = pg.time.Clock()
-arial12 = pg.font.SysFont('arial', 12)  '''Create font'''
+arial12 = pg.font.SysFont('arial', 12)  #Create font
 
-class Button:           '''Create button for pg''' 
-    def __init__(self, widh, height, AColor , IaColor): '''Initialize button'''
+class Button:           #Create button for pg
+    def __init__(self, widh, height, AColor , IaColor): #Initialize button
         self.widh =  widh
         self.height = height
         self.AColor = AColor
         self.IaColor = IaColor
-    def draw(self, x, y, text): '''Draw button with changeable parameters''' 
+    def draw(self, x, y, text): #Draw button with changeable parameters
         mouse = pg.mouse.get_pos()
         click = pg.mouse.get_pressed()
-        if ( x < mouse[0] < x + self.widh ) and ( y < mouse[1] < y + self.height ) :    '''Scan mouse location'''
+        if ( x < mouse[0] < x + self.widh ) and ( y < mouse[1] < y + self.height ) :    #Scan mouse location
 
-            pg.draw.rect(Window, self.AColor, (x, y, self.widh, self.height))   '''Draw active button'''
+            pg.draw.rect(Window, self.AColor, (x, y, self.widh, self.height))   #Draw active button
             if click[0]==1 :
-                pg.draw.rect(Window,  (0, 150, 0), (x, y, self.widh, self.height))  '''Draw pressed button'''
+                pg.draw.rect(Window,  (0, 150, 0), (x, y, self.widh, self.height))  #Draw pressed button
                 pg.display.update()
                 pg.time.delay(500)
                 return True
 
         else:
-            pg.draw.rect(Window, self.IaColor, (x, y, self.widh, self.height ) )    '''Draw inactive button'''
+            pg.draw.rect(Window, self.IaColor, (x, y, self.widh, self.height ) )    #Draw inactive button
         txt = arial12.render(text, 1, (255, 255, 255), None)
         Window.blit(txt, (x + 10, y + 19))
         
@@ -60,10 +60,10 @@ butpause = Button(50, 50, GREEN, RED)
 butset = Button(50, 50, GREEN, RED)
 
 #File paths
-file_path_binds = 'Content/Binds.txt'           '''File path for bind keys'''
-file_path_sounds = 'Content/Sounds.txt'         '''File path for sounds'''
+file_path_binds = 'Content/Binds.txt'           #File path for bind keys
+file_path_sounds = 'Content/Sounds.txt'         #File path for sounds
 
-def read_saves(dict,file_path):                 '''Load saves from file to dict'''
+def read_saves(dict,file_path):                 #Load saves from file to dict
     s = open(file_path)
 
     for i in range(1,15):
@@ -71,7 +71,7 @@ def read_saves(dict,file_path):                 '''Load saves from file to dict'
         dict[a] = s.readline().replace('\n','')
     s.close()
     return dict
-def write_saves(dict, file_path ):              '''Upload saves from dict to file'''
+def write_saves(dict, file_path ):              #Upload saves from dict to file
     s = open(file_path,'r+')
     n = ''
     for i in range(1,15):
@@ -79,6 +79,7 @@ def write_saves(dict, file_path ):              '''Upload saves from dict to fil
         n += dict[a] + '\n'
     s.write(n)
     s.close()
+    return n
 
 #Dicts for saves
 sounds = {"1":'',"2":'',"3":'',"4":'',"5":'',"6":'',"7":'',"8":'',"9":'',
@@ -91,24 +92,24 @@ read_saves(sounds, file_path_sounds)
 read_saves(binds,file_path_binds)       
 
 
-Window.fill((150, 150, 150))    '''Fill pg window background with RGB color'''
-pg.display.update()             '''Update display for render'''
+Window.fill((150, 150, 150))    #Fill pg window background with RGB color
+pg.display.update()             #Update display for render'''
 
-#Program modes
-running = True      '''Main'''
-settings = False    '''Settings mode'''
-pause = False       '''Pause mode'''
+#Conditions
+running = True      #Main loop condition
+settings = False    #Settings mode condition
+pause = False       #Pause mode condition
 
 #Main program loop
 while running:
     
     clock.tick(FPS)
     
-    for i in pg.event.get(): '''Quit button check'''
+    for i in pg.event.get(): #Quit button check
         if i.type == pg.QUIT:
             running = False
             
-    if butpause.draw(50,50,'Pause'): '''Turn on pause mode'''
+    if butpause.draw(50,50,'Pause'): #Turn on pause mode
         pause = True
         Window.fill((150, 150, 150))
         pg.display.update()
@@ -119,12 +120,12 @@ while running:
                 if i.type == pg.QUIT:
                     running = False
                     pause = False
-            if butpause.draw(50, 50, "Play"): '''Turn off pause mode'''
+            if butpause.draw(50, 50, "Play"): #Turn off pause mode
                 pause = False
                 Window.fill((150, 150, 150))
             pg.display.update()
             
-    if butset.draw(50, 150, 'set'): '''Turn on settings mode'''
+    if butset.draw(50, 150, 'set'): #Turn on settings mode
         settings = True
         while settings:
             Window.fill((150, 150, 150))
@@ -133,12 +134,12 @@ while running:
                 if i.type == pg.QUIT:
                     running = False
                     settings = False
-            if butset.draw(50, 150, 'set'): '''Turn off settings mode'''
+            if butset.draw(50, 150, 'set'): #Turn off settings mode
                 settings = False
 
             #Buttons and their functions
             if but1.draw(200, 50, binds['1'], ):
-                sounds['1'] = filedialog.askopenfilename(filetypes=[("mp3 files", ".mp3")]) '''choosing file path for sound'''
+                sounds['1'] = filedialog.askopenfilename(filetypes=[("mp3 files", ".mp3")]) #choosing file path for sound
             if but2.draw(350, 50, binds['2'], ):
                 sounds['2'] = filedialog.askopenfilename(filetypes=[("mp3 files", ".mp3")])
             if but3.draw(500, 50, binds['3'], ):
@@ -166,12 +167,12 @@ while running:
         pg.display.update()
 
     #Buttons and their functions in main
-    if but1.draw(200, 50, binds['1'], ): '''Sets key bind'''
+    if but1.draw(200, 50, binds['1'], ): #Sets key bind
         i=0
         b1=''
         while(i==0):
             time.sleep(0.3)
-            b1 = keyboard.read_key()    '''Scan keyboard and output pressed key'''
+            b1 = keyboard.read_key()    #Scan keyboard and output pressed key
             time.sleep(0.3)
             if b1!='':
                 i=1
@@ -289,9 +290,9 @@ while running:
         binds["12"] = b12
 
     #Play sounds
-    if keyboard.is_pressed(binds['1']):         '''Scan keyboard'''
-        sound1 = pg.mixer.Sound(sounds['1'])    '''Initialize sound'''
-        sound1.play()                           '''Play sound if scaned key = bind'''
+    if keyboard.is_pressed(binds['1']):         #Scan keyboard
+        sound1 = pg.mixer.Sound(sounds['1'])    #Initialize sound
+        sound1.play()                           #Play sound if scaned key = bind
         time.sleep(0.2)
     if keyboard.is_pressed(binds['2']):
         sound2 = pg.mixer.Sound(sounds['2'])
@@ -339,6 +340,6 @@ while running:
         time.sleep(0.2)
     pg.display.update()
 
-#Upload changes
+#Upload changes to save files
 write_saves(binds,file_path_binds)
 write_saves(sounds, file_path_sounds)
